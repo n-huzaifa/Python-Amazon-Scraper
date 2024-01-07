@@ -2,14 +2,18 @@ import os
 import openpyxl
 import re
 import logging
-from time import sleep
 import datetime
+import json
+from time import sleep
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+
+with open("last_asin.json", 'r') as file:
+    last_asin_data = json.load(file)
 
 def setup_chrome_driver(extension_path):
     chrome_options = webdriver.ChromeOptions()
@@ -41,11 +45,21 @@ def get_excel_file_path(directory):
         
     return excel_files
 
-def load_excel_workbook(excel_file_path):
+def load_excel_workbook(directory, excel_file_path):
     wb = openpyxl.load_workbook(excel_file_path)
     sheet = wb.active
-    amazon_urls = [tuple(sheet.cell(row=cell.row, column=col).value for col in range(1, sheet.max_column + 1)) for cell in sheet['A'] if cell.value and cell.row > 1]
-    return amazon_urls
+    asins = [tuple(sheet.cell(row=cell.row, column=col).value for col in range(1, sheet.max_column + 1)) for cell in sheet['A'] if cell.value and cell.row > 1]
+        
+    last_asin = last_asin_data[directory]
+    
+    if last_asin:
+        # Find the index of the last ASIN in the list
+        last_asin_index = next((index for index, a in enumerate(asins) if a[0] == last_asin), None)
+        
+        if last_asin_index is not None:
+            # Return ASINs that come after the last ASIN
+            return asins[last_asin_index + 1:]
+    return asins
   
 def create_or_load_workbook(directory):
     
@@ -55,11 +69,26 @@ def create_or_load_workbook(directory):
     
     if os.path.isfile(excel_file_path):
         workbook = openpyxl.load_workbook(excel_file_path)
+        worksheet = workbook.active
+        row_index = worksheet.max_row
     else:
         workbook = openpyxl.Workbook()
         workbook.save(excel_file_path)
+        worksheet = workbook.active
 
-    return workbook, excel_file_path
+        worksheet.cell(row=1, column=1).value = "ASIN"
+        worksheet.cell(row=1, column=2).value = "Brand"
+        worksheet.cell(row=1, column=3).value = "Title"
+        worksheet.cell(row=1, column=4).value = "Price"
+        worksheet.cell(row=1, column=5).value = "Best Seller Rank"
+        worksheet.cell(row=1, column=6).value = "Review Numbers"
+        worksheet.cell(row=1, column=7).value = "Sales Figure"
+        worksheet.cell(row=1, column=8).value = "Avg Review"
+        worksheet.cell(row=1, column=9).value = "Category Rank"
+        worksheet.cell(row=1, column=10).value = 'Date'
+        row_index = 2
+
+    return workbook, worksheet, row_index, excel_file_path
 
 def extract_price(driver):
     # Try to find the price directly on the page
@@ -98,7 +127,7 @@ def extract_price(driver):
 
     return "Price Not Found"
 
-def extract_product_data(driver, asin, row_index, worksheet):
+def extract_product_data(directory, driver, asin, row_index, worksheet):
     
     try:
         title, brand, price, best_seller_rank, reviewNumbers, sales_figure, avgReview, rank_category = (None, None, None, None, None, None, None, None)
@@ -190,7 +219,7 @@ def extract_product_data(driver, asin, row_index, worksheet):
             price = extract_price(driver)
 
             # Extract data and update the Excel sheet
-            row_index = update_excel_sheet(worksheet, row_index, asin, brand, title, price, best_seller_rank, reviewNumbers, sales_figure, avgReview, rank_category)
+            row_index = update_excel_sheet(directory, worksheet, row_index, asin, brand, title, price, best_seller_rank, reviewNumbers, sales_figure, avgReview, rank_category)
             logging.info(f"Successfully extracted data for ASIN: {asin}")
         else:
             logging.info(f"Sales Figure & Best Seller Rank for ASIN {asin} not found. Skipping to the next ASIN.")
@@ -201,7 +230,7 @@ def extract_product_data(driver, asin, row_index, worksheet):
     finally:
         return row_index 
 
-def update_excel_sheet(worksheet, row_index, asin, brand, title, price, best_seller_rank, review_numbers, sales_figure, avg_review, category_rank):
+def update_excel_sheet(directory, worksheet, row_index, asin, brand, title, price, best_seller_rank, review_numbers, sales_figure, avg_review, category_rank):
     
     try:
         worksheet.cell(row=row_index, column=1).value = asin
@@ -215,6 +244,9 @@ def update_excel_sheet(worksheet, row_index, asin, brand, title, price, best_sel
         worksheet.cell(row=row_index, column=9).value = category_rank
         worksheet.cell(row=row_index, column=10).value = datetime.datetime.now().strftime("%Y-%m-%d")
         row_index = row_index + 1
+        last_asin_data[directory] = asin
+        with open("last_asin.json", 'w') as file:
+            json.dump(last_asin_data, file, indent=2)
         logging.info(f"Updated Excel sheet for ASIN: {asin}")
     except Exception as e:
         logging.error(f"Error updating Excel sheet for ASIN {asin}: {e}")
@@ -222,29 +254,18 @@ def update_excel_sheet(worksheet, row_index, asin, brand, title, price, best_sel
         return row_index
 
 def main(driver, directory = None):
-    
+
+    logging.basicConfig(filename=f'logfile_{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}.txt ', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
     try:
         excel_files = get_excel_file_path(directory)
 
         for excel_file_path in excel_files:
             if excel_file_path:
                 try:
-                    asins = load_excel_workbook(excel_file_path)
+                    asins = load_excel_workbook(directory, excel_file_path)
                     
-                    workbook, excel_file_path_asin = create_or_load_workbook(directory)
-                    worksheet = workbook.active
-
-                    worksheet.cell(row=1, column=1).value = "ASIN"
-                    worksheet.cell(row=1, column=2).value = "Brand"
-                    worksheet.cell(row=1, column=3).value = "Title"
-                    worksheet.cell(row=1, column=4).value = "Price"
-                    worksheet.cell(row=1, column=5).value = "Best Seller Rank"
-                    worksheet.cell(row=1, column=6).value = "Review Numbers"
-                    worksheet.cell(row=1, column=7).value = "Sales Figure"
-                    worksheet.cell(row=1, column=8).value = "Avg Review"
-                    worksheet.cell(row=1, column=9).value = "Category Rank"
-                    worksheet.cell(row=1, column=10).value = 'Date'
-                    row_index = 2
+                    workbook, worksheet, row_index, excel_file_path_asin = create_or_load_workbook(directory)
 
                     for asin in asins:
 
@@ -256,7 +277,7 @@ def main(driver, directory = None):
                             # Use WebDriverWait with a timeout of 60 seconds for each ASIN extraction
                             WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.ID, "productTitle")))
                             
-                            row_index = extract_product_data(driver, asin[0], row_index, worksheet)
+                            row_index = extract_product_data(directory, driver, asin[0], row_index, worksheet)
                             workbook.save(excel_file_path_asin)
 
                         except TimeoutException:
