@@ -91,7 +91,6 @@ def scrape_categories(driver, url):
 
     for _ in range(max_retries):
         try:
-            logging.info(f"Attempting to scrape categories from URL: {url}")
             
             driver.get(url)
             WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, '_p13n-zg-nav-tree-all_style_zg-browse-group__88fbz')))
@@ -117,8 +116,6 @@ def scrape_categories(driver, url):
 
                 for category in categories:
                     array_to_append.append({'name': category['name'], 'url': category['url']})
-
-            logging.info(f"Scraping successful for URL: {url}")
             break
 
         except TimeoutException:
@@ -152,7 +149,6 @@ def main(driver, url_data):
         url = url_data[0]
         level = url_data[1]
         category_name = url_data[2]
-        logging.info(f"Scraping data from URL: {url}")
 
         driver.get(url)
         sleep(5)
@@ -175,14 +171,13 @@ def main(driver, url_data):
         row = 2
         row = scrape_and_write(driver, worksheet, level, url, row, main_category_type)
 
-        logging.info(f"Scraping successful for URL: {url}")
         remove_duplicate_categories(worksheet)
         save_workbook(workbook, excel_file_path)
 
     except Exception as e:
         logging.error(f"An error occurred while scraping URL {url}: {str(e)}")
 
-    logging.info("All URLs processed successfully.")
+    logging.info(f"All URLs for {main_category_type} processed successfully.")
 
 if __name__ == "__main__":
     base_url = 'https://www.amazon.de/'

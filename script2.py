@@ -3,7 +3,7 @@ import pyperclip
 import openpyxl
 import logging
 from time import sleep
-from datetime import datetime
+import datetime
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -60,7 +60,7 @@ def create_or_load_workbook(directory):
         folder_path = os.path.join(directory, f'6. Skript 2')
         os.makedirs(folder_path, exist_ok=True)
 
-        excel_file_path = os.path.join(folder_path, f'./Script2_Germany_{directory}_{datetime.now().strftime("%Y%m%d")}.xlsx')
+        excel_file_path = os.path.join(folder_path, f'./Script2_Germany_{directory}_{datetime.datetime.now().strftime("%Y%m%d")}.xlsx')
 
         if os.path.isfile(excel_file_path):
             workbook = openpyxl.load_workbook(excel_file_path)
@@ -113,7 +113,7 @@ def extract_asins_and_category(driver, url, worksheet, last_row, Category_Level)
                 worksheet.cell(row=last_row, column=1).value = value
                 worksheet.cell(row=last_row, column=2).value = category_name
                 worksheet.cell(row=last_row, column=3).value = Category_Level
-                worksheet.cell(row=last_row, column=4).value = datetime.now().strftime("%Y-%m-%d")
+                worksheet.cell(row=last_row, column=4).value = datetime.datetime.now().strftime("%Y-%m-%d")
                 last_row += 1
             logging.info(f"ASINs extracted from: {category_name}")
             return last_row
@@ -153,7 +153,6 @@ def save_workbook(workbook, excel_file_path):
 def main(driver, directory = None):
 
     try:
-        # directory = "Computer Audio & Video Accessories"
         excel_files = get_excel_files(directory)
         workbook, asin_excel_file_path, last_row = create_or_load_workbook(directory)
                         

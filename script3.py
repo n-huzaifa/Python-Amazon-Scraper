@@ -3,7 +3,7 @@ import openpyxl
 import re
 import logging
 from time import sleep
-from datetime import datetime
+import datetime
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -51,7 +51,7 @@ def create_or_load_workbook(directory):
     
     folder_path = os.path.join(directory, f'7. Skript 3')
     os.makedirs(folder_path, exist_ok=True)
-    excel_file_path = os.path.join(folder_path, f'./Script3_Germany_{directory}_{datetime.now().strftime("%Y%m%d")}.xlsx')
+    excel_file_path = os.path.join(folder_path, f'./Script3_Germany_{directory}_{datetime.datetime.now().strftime("%Y%m%d")}.xlsx')
     
     if os.path.isfile(excel_file_path):
         workbook = openpyxl.load_workbook(excel_file_path)
@@ -213,7 +213,7 @@ def update_excel_sheet(worksheet, row_index, asin, brand, title, price, best_sel
         worksheet.cell(row=row_index, column=7).value = sales_figure
         worksheet.cell(row=row_index, column=8).value = avg_review
         worksheet.cell(row=row_index, column=9).value = category_rank
-        worksheet.cell(row=row_index, column=10).value = datetime.now().strftime("%Y-%m-%d")
+        worksheet.cell(row=row_index, column=10).value = datetime.datetime.now().strftime("%Y-%m-%d")
         row_index = row_index + 1
         logging.info(f"Updated Excel sheet for ASIN: {asin}")
     except Exception as e:
@@ -274,8 +274,6 @@ def main(driver, directory = None):
             workbook.close()
     except Exception as e:
         logging.error(f"Script execution failed: {e}")
-    # finally:
-        # driver.quit()
 
 if __name__ == "__main__":
     extension_path = './amazoncrxextension.crx'

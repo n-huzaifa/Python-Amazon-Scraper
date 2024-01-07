@@ -1,3 +1,8 @@
+import smtplib
+import os
+import logging
+import json
+import datetime
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -7,23 +12,19 @@ from selenium.webdriver.chrome.options import Options
 from script1 import main as script1_main
 from script2 import main as script2_main
 from script3 import main as script3_main
-import smtplib
-import os
-import logging
-import time
-from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 
-all_urls = [[ "https://www.amazon.de/-/en/gp/bestsellers/computers/430049031/ref=zg_bs_nav_computers_2_427958031" , 3, "Adapters"],
-             ["https://www.amazon.de/-/en/gp/new-releases/computers/430049031/ref=zg_bsnr_nav_computers_2_427958031" , 3, "Adapters"],
-             ["https://www.amazon.de/-/en/gp/most-wished-for/computers/430049031/ref=zg_mw_nav_computers_2_427958031" , 3, "Adapters"],
-             ["https://www.amazon.de/-/en/gp/most-gifted/computers/430049031/ref=zg_mg_nav_computers_2_427958031" , 3, "Adapters"]
-             ]
+with open("data.json", 'r') as file:
+    data = json.load(file)
+
+recipient_email = data["recipient_email"]
+sender_email = data["sender_email"]
+sender_password = data["sender_password"]
+all_urls = data["all_urls"]
 
 extension_path = './amazoncrxextension.crx'
-
 base_url = 'https://www.amazon.de/'
 
 def configure_driver():
@@ -92,9 +93,6 @@ def send_mail(sender_email, sender_password, recipient, subject, message, excel_
         smtp_server.quit()
 
 def main_mail(directory, script):
-    recipient_email = 'example1@gmail.com'
-    sender_email = 'example1@gmail.com'
-    sender_password = 'password'
     subject = 'Excel File'
     message = 'Please find the attached Excel file.'
 
@@ -103,7 +101,7 @@ def main_mail(directory, script):
 
 def main(all_urls):
 
-    logging.basicConfig(filename=f'logfile_{datetime.now().strftime("%Y%m%d%H%M%S")}.txt ', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    logging.basicConfig(filename=f'logfile_{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}.txt ', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
     driver = configure_driver()
     handle_cookies(driver)
@@ -126,21 +124,8 @@ def main(all_urls):
     script3_main(driver, category)
     main_mail(category, 1)
 
-# Close the WebDriver instance after all scripts have run
+    # Close the WebDriver instance after all scripts have run
     driver.quit()
 
-
-def job():
-    # Your main function call here
-    main(all_urls)
-
 if __name__ == "__main__":
-    # Run the job only on Monday, Tuesday, and Saturday
-    while True:
-        current_day = datetime.now().strftime('%A').lower()
-
-        if current_day in ['monday', 'tuesday', 'saturday']:
-            job()
-
-        # Sleep for a day
-        time.sleep(24 * 60 * 60)
+    main(all_urls)

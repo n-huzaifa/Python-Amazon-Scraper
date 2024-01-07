@@ -1,0 +1,11 @@
+{
+    "recipient_email" : "example1@gmail.com",
+    "sender_email" : "example2@gmail.com",
+    "sender_password" : "password",
+    
+    "all_urls" : [[ "https://www.amazon.de/-/en/gp/bestsellers/computers/430049031/ref=zg_bs_nav_computers_2_427958031" , 3, "Adapters"],
+                    ["https://www.amazon.de/-/en/gp/new-releases/computers/430049031/ref=zg_bsnr_nav_computers_2_427958031" , 3, "Adapters"],
+                    ["https://www.amazon.de/-/en/gp/most-wished-for/computers/430049031/ref=zg_mw_nav_computers_2_427958031" , 3, "Adapters"],
+                    ["https://www.amazon.de/-/en/gp/most-gifted/computers/430049031/ref=zg_mg_nav_computers_2_427958031" , 3, "Adapters"]
+                    ]
+}
