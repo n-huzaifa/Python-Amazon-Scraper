@@ -26,8 +26,8 @@ def handle_cookies(driver):
         pass
 
 def get_excel_files(directory):
-    excel_files = []
-    
+    excel_files_by_folder = {}
+
     if os.path.exists(directory) and os.path.isdir(directory):
         # Iterate through all subdirectories and files in the given directory
         for root, dirs, files in os.walk(directory):
@@ -38,9 +38,14 @@ def get_excel_files(directory):
                     if file.lower().endswith(('.xls', '.xlsx')):
                         # Create the full path to the Excel file
                         file_path = os.path.join(root, file)
-                        excel_files.append(file_path)
+                        
+                        # Update the dictionary with the latest file for each folder
+                        folder_key = os.path.dirname(file_path)
+                        if folder_key not in excel_files_by_folder or os.path.getmtime(file_path) > os.path.getmtime(excel_files_by_folder[folder_key]):
+                            excel_files_by_folder[folder_key] = file_path
 
-    return excel_files
+    # Return a list of the latest Excel files from each folder
+    return list(excel_files_by_folder.values())
 
 def load_amazon_urls(excel_file_path):
     try:
@@ -152,6 +157,8 @@ def save_workbook(workbook, excel_file_path):
 
 def main(driver, directory = None):
 
+    logging.basicConfig(filename=f'logfile_{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}.txt ', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
     try:
         excel_files = get_excel_files(directory)
         workbook, asin_excel_file_path, last_row = create_or_load_workbook(directory)
@@ -190,4 +197,4 @@ if __name__ == "__main__":
     extension_path = './amazoncrxextension.crx'
     driver = setup_chrome_driver(extension_path)
     handle_cookies(driver)
-    main(driver, "Adapters")
+    main(driver, "Adapter")
