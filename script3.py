@@ -31,19 +31,26 @@ def handle_cookies(driver):
         pass
 
 def get_excel_file_path(directory):
-    folder_path = os.path.join(directory, f'6. Skript 2')
+    folder_path = os.path.join(directory, '6. Skript 2')
     
     excel_files = []
     if os.path.exists(folder_path) and os.path.isdir(folder_path):
-    # Iterate through the files in the directory
+        # Iterate through the files in the directory
         for file in os.listdir(folder_path):
             # Check if the file has a .xls or .xlsx extension
             if file.lower().endswith(('.xls', '.xlsx')):
                 # Create the full path to the Excel file
                 file_path = os.path.join(folder_path, file)
-                excel_files.append(file_path)
+                excel_files.append((file_path, os.path.getmtime(file_path)))
         
-    return excel_files
+        # Sort the files based on modification time in descending order
+        excel_files.sort(key=lambda x: x[1], reverse=True)
+        
+        if excel_files:
+            # Return the path of the latest Excel file
+            return excel_files[0]
+    
+    return None
 
 def load_excel_workbook(directory, excel_file_path):
     wb = openpyxl.load_workbook(excel_file_path)
