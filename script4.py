@@ -22,7 +22,8 @@ with open("data.json", 'r') as file:
 recipient_email = data["recipient_email"]
 sender_email = data["sender_email"]
 sender_password = data["sender_password"]
-all_urls = data["all_urls"]
+all_urls_unsorted = data["all_urls"]
+all_urls = sorted(all_urls_unsorted, key=lambda x: x[2])
 
 extension_path = './amazoncrxextension.crx'
 base_url = 'https://www.amazon.de/'
