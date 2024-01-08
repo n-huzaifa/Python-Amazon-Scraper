@@ -22,8 +22,7 @@ with open("data.json", 'r') as file:
 recipient_email = data["recipient_email"]
 sender_email = data["sender_email"]
 sender_password = data["sender_password"]
-all_urls_unsorted = data["all_urls"]
-all_urls = sorted(all_urls_unsorted, key=lambda x: x[2])
+all_urls = data["all_urls"]
 
 extension_path = './amazoncrxextension.crx'
 base_url = 'https://www.amazon.de/'
@@ -44,7 +43,7 @@ def handle_cookies(driver):
         pass
 
 def get_excel_files(directory, script):
-    excel_files = []
+    excel_files = {}
     
     def is_skript_directory(path):
         if script == 0:
@@ -55,14 +54,23 @@ def get_excel_files(directory, script):
             return False
 
     if os.path.exists(directory) and os.path.isdir(directory):
+        # Iterate through all subdirectories and files in the given directory
         for root, dirs, files in os.walk(directory):
+            # Check if the current directory contains the specified text
             if is_skript_directory(root):
                 for file in files:
+                    # Check if the file has a .xls or .xlsx extension
                     if file.lower().endswith(('.xls', '.xlsx')):
+                        # Create the full path to the Excel file
                         file_path = os.path.join(root, file)
-                        excel_files.append(file_path)
+                        
+                        # Update the dictionary with the latest file for each folder
+                        folder_key = os.path.dirname(file_path)
+                        if folder_key not in excel_files or os.path.getmtime(file_path) > os.path.getmtime(excel_files[folder_key]):
+                            excel_files[folder_key] = file_path
 
-    return excel_files
+    # Return a list of the latest Excel files from each folder
+    return list(excel_files.values())
 
 def create_email(sender_email, recipient, subject, message, excel_files):
     msg = MIMEMultipart()
