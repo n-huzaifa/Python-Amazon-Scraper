@@ -11,9 +11,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from amazoncaptcha import AmazonCaptcha
 
-with open("last_asin.json", 'r') as file:
-    last_asin_data = json.load(file)
+with open("last_state.json", 'r') as file:
+    last_state_data = json.load(file)
 
 def setup_chrome_driver(extension_path):
     chrome_options = webdriver.ChromeOptions()
@@ -24,55 +25,110 @@ def setup_chrome_driver(extension_path):
 
 def handle_cookies(driver):
     try:
+        # Use WebDriverWait to wait for the captcha image to be present
+        image_element = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "//div[@class='a-row a-text-center']//img")))
+        link = image_element.get_attribute('src')
+
+        # Solve the captcha
+        captcha = AmazonCaptcha.fromlink(link)
+        captcha_value = AmazonCaptcha.solve(captcha)
+
+        # Find the input field and enter the captcha value
+        input_field = driver.find_element(By.ID, "captchacharacters")
+        input_field.send_keys(captcha_value)
+
+        # Find the submit button and click it
+        button = driver.find_element(By.CLASS_NAME, "a-button-text")
+        button.click()
+    except TimeoutException:
+        pass
+    try:
         reject_button = WebDriverWait(driver, 5).until(
             EC.element_to_be_clickable((By.ID, 'sp-cc-rejectall-link')))
         reject_button.click()
     except TimeoutException:
         pass
 
-def get_excel_file_path(directory):
-    folder_path = os.path.join(directory, '6. Skript 2')
+def get_category_folder(main_category_name):
+    
+    main_folder_name = main_category_name
+
+    if main_category_name == 'Electrical Goods':
+        main_folder_name = "Category 1"
+    elif main_category_name == 'Fashion & Accessories':
+        main_folder_name = "Category 2"
+    elif main_category_name == 'Home & Garden':
+        main_folder_name = "Category 3"
+    elif main_category_name == 'Office & Business Equipment':
+        main_folder_name = "Category 4"
+    elif main_category_name == 'DIY':
+        main_folder_name = "Category 5"
+    elif main_category_name == 'Drugstore & Cosmetics':
+        main_folder_name = "Category 6"
+    elif main_category_name == 'Baby & Child':
+        main_folder_name = "Category 7"
+    elif main_category_name == 'Sport & Leisure':
+        main_folder_name = "Category 8"
+    elif main_category_name == 'Pet Supplies':
+        main_folder_name = "Category 9"
+    elif main_category_name == 'Car & Motorbike':
+        main_folder_name = "Category 10"
+    elif main_category_name == 'Books, Media & Entertainment':
+        main_folder_name = "Category 11"
+    elif main_category_name == 'Food & Beverages':
+        main_folder_name = "Category 12"
+    elif main_category_name == 'Other':
+        main_folder_name = "Category 13"
+
+    return main_folder_name
+
+def get_excel_file_path(main_category_name):
+
+    main_folder_name = get_category_folder(main_category_name)
+
+    folder_path = os.path.join(main_folder_name, f'6. Skript 2')
     
     excel_files = []
     if os.path.exists(folder_path) and os.path.isdir(folder_path):
-        # Iterate through the files in the directory
+    # Iterate through the files in the directory
         for file in os.listdir(folder_path):
             # Check if the file has a .xls or .xlsx extension
             if file.lower().endswith(('.xls', '.xlsx')):
                 # Create the full path to the Excel file
                 file_path = os.path.join(folder_path, file)
-                excel_files.append((file_path, os.path.getmtime(file_path)))
-        
-        # Sort the files based on modification time in descending order
-        excel_files.sort(key=lambda x: x[1], reverse=True)
-        
-        if excel_files:
-            # Return the path of the latest Excel file
-            return excel_files[0]
+                excel_files.append(file_path)
     
-    return None
+    # Return the latest Excel file based on modification time
+    if excel_files:
+        latest_file = max(excel_files, key=lambda x: os.path.getctime(x))
+        return latest_file
+    else:
+        return None  # Return None if no Excel files were found
 
-def load_excel_workbook(directory, excel_file_path):
+def load_excel_workbook(category, excel_file_path):
     wb = openpyxl.load_workbook(excel_file_path)
     sheet = wb.active
     asins = [tuple(sheet.cell(row=cell.row, column=col).value for col in range(1, sheet.max_column + 1)) for cell in sheet['A'] if cell.value and cell.row > 1]
-        
-    last_asin = last_asin_data[directory]
+    try:
+        last_asin = last_state_data["script3"][category]
     
-    if last_asin:
         # Find the index of the last ASIN in the list
         last_asin_index = next((index for index, a in enumerate(asins) if a[0] == last_asin), None)
         
         if last_asin_index is not None:
             # Return ASINs that come after the last ASIN
             return asins[last_asin_index + 1:]
+    except:
+        pass
+
     return asins
   
-def create_or_load_workbook(directory):
+def create_or_load_workbook(category):
     
-    folder_path = os.path.join(directory, f'7. Skript 3')
+    main_folder_name = get_category_folder(category)
+    folder_path = os.path.join(main_folder_name, f'7. Skript 3')
     os.makedirs(folder_path, exist_ok=True)
-    excel_file_path = os.path.join(folder_path, f'./Script3_Germany_{directory}_{datetime.datetime.now().strftime("%Y%m%d")}.xlsx')
+    excel_file_path = os.path.join(folder_path, f'./Script3_Germany_{category}_{datetime.datetime.now().strftime("%Y%m%d")}.xlsx')
     
     if os.path.isfile(excel_file_path):
         workbook = openpyxl.load_workbook(excel_file_path)
@@ -134,7 +190,7 @@ def extract_price(driver):
 
     return "Price Not Found"
 
-def extract_product_data(directory, driver, asin, row_index, worksheet):
+def extract_product_data(category, driver, asin, row_index, worksheet):
     
     try:
         title, brand, price, best_seller_rank, reviewNumbers, sales_figure, avgReview, rank_category = (None, None, None, None, None, None, None, None)
@@ -226,7 +282,7 @@ def extract_product_data(directory, driver, asin, row_index, worksheet):
             price = extract_price(driver)
 
             # Extract data and update the Excel sheet
-            row_index = update_excel_sheet(directory, worksheet, row_index, asin, brand, title, price, best_seller_rank, reviewNumbers, sales_figure, avgReview, rank_category)
+            row_index = update_excel_sheet(category, worksheet, row_index, asin, brand, title, price, best_seller_rank, reviewNumbers, sales_figure, avgReview, rank_category)
             logging.info(f"Successfully extracted data for ASIN: {asin}")
         else:
             logging.info(f"Sales Figure & Best Seller Rank for ASIN {asin} not found. Skipping to the next ASIN.")
@@ -237,7 +293,7 @@ def extract_product_data(directory, driver, asin, row_index, worksheet):
     finally:
         return row_index 
 
-def update_excel_sheet(directory, worksheet, row_index, asin, brand, title, price, best_seller_rank, review_numbers, sales_figure, avg_review, category_rank):
+def update_excel_sheet(category, worksheet, row_index, asin, brand, title, price, best_seller_rank, review_numbers, sales_figure, avg_review, category_rank):
     
     try:
         worksheet.cell(row=row_index, column=1).value = asin
@@ -251,28 +307,26 @@ def update_excel_sheet(directory, worksheet, row_index, asin, brand, title, pric
         worksheet.cell(row=row_index, column=9).value = category_rank
         worksheet.cell(row=row_index, column=10).value = datetime.datetime.now().strftime("%Y-%m-%d")
         row_index = row_index + 1
-        last_asin_data[directory] = asin
-        with open("last_asin.json", 'w') as file:
-            json.dump(last_asin_data, file, indent=2)
+        last_state_data["script3"][category] = asin
+        with open("last_state.json", 'w') as file:
+            json.dump(last_state_data, file, indent=4)
         logging.info(f"Updated Excel sheet for ASIN: {asin}")
     except Exception as e:
         logging.error(f"Error updating Excel sheet for ASIN {asin}: {e}")
     finally:
         return row_index
 
-def main(driver, directory = None):
-
-    logging.basicConfig(filename=f'logfile_{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}.txt ', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+def main(driver, category):
 
     try:
-        excel_files = get_excel_file_path(directory)
+        excel_files = get_excel_file_path(category)
 
         for excel_file_path in excel_files:
             if excel_file_path:
                 try:
-                    asins = load_excel_workbook(directory, excel_file_path)
+                    asins = load_excel_workbook(category, excel_file_path)
                     
-                    workbook, worksheet, row_index, excel_file_path_asin = create_or_load_workbook(directory)
+                    workbook, worksheet, row_index, excel_file_path_asin = create_or_load_workbook(category)
 
                     for asin in asins:
 
@@ -284,7 +338,7 @@ def main(driver, directory = None):
                             # Use WebDriverWait with a timeout of 60 seconds for each ASIN extraction
                             WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.ID, "productTitle")))
                             
-                            row_index = extract_product_data(directory, driver, asin[0], row_index, worksheet)
+                            row_index = extract_product_data(category, driver, asin[0], row_index, worksheet)
                             workbook.save(excel_file_path_asin)
 
                         except TimeoutException:
@@ -304,7 +358,8 @@ def main(driver, directory = None):
         logging.error(f"Script execution failed: {e}")
 
 if __name__ == "__main__":
+    logging.basicConfig(filename=f'Log Files\\logfile_{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}.txt ', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     extension_path = './amazoncrxextension.crx'
     driver = setup_chrome_driver(extension_path)
     handle_cookies(driver)
-    main(driver, "Adapters")
+    main(driver, "Electrical Goods")
