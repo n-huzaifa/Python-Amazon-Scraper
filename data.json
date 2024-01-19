@@ -1,11 +1,255 @@
 {
-    "recipient_email" : "example1@gmail.com",
-    "sender_email" : "example2@gmail.com",
-    "sender_password" : "password",
+    "recipient_email": "ma4704776@gmail.com",
+    "sender_email": "smart.sender100@gmail.com",
+    "sender_password": "tvbhtnhtvuqsloba",
+    "all_urls": {
+        
+        "Electrical Goods" :
+        [["https://www.amazon.de/-/en/gp/new-releases/photo/ref=zg_bsnr_nav_photo_0", 1, "1 - Electrical Goods - Camera & Photo - Hot New Releases"],
+        ["https://www.amazon.de/-/en/gp/new-releases/computers/ref=zg_bsnr_nav_computers_0", 1, "1 - Electrical Goods - Computer & Accessories - Hot New Releases"],
+        ["https://www.amazon.de/-/en/gp/new-releases/electronics/ref=zg_bsnr_nav_electronics_0", 1, "1 - Electrical Goods - Electronics & Photo - Hot New Releases"],
+
+        ["https://www.amazon.de/-/en/gp/bestsellers/photo/ref=zg_bs_nav_photo_0", 1, "2 - Electrical Goods - Camera & Photo - Best Sellers"],
+        ["https://www.amazon.de/-/en/gp/bestsellers/computers/ref=zg_bs_nav_computers_0", 1, "2 - Electrical Goods - Computer & Accessories - Best Sellers"],
+        ["https://www.amazon.de/-/en/gp/bestsellers/electronics/ref=zg_bs_nav_electronics_0", 1, "2 - Electrical Goods - Electronics & Photo - Best Sellers"],
+
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/photo/ref=zg_bsms_nav_photo_0", 1, "3 - Electrical Goods - Camera & Photo - Movers and Shakers"],
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/computers/ref=zg_bsms_nav_computers_0", 1, "3 - Electrical Goods - Computer & Accessories - Movers and Shakers"],
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/electronics/ref=zg_bsms_nav_electronics_0", 1, "3 - Electrical Goods - Electronics & Photo - Movers and Shakers"],
+
+        ["https://www.amazon.de/-/en/gp/most-wished-for/photo/ref=zg_mw_nav_photo_0", 1, "4 - Electrical Goods - Camera & Photo - Most Wished For"],
+        ["https://www.amazon.de/-/en/gp/most-wished-for/computers/ref=zg_mw_nav_computers_0", 1, "4 - Electrical Goods - Computer & Accessories - Most Wished For"],
+        ["https://www.amazon.de/-/en/gp/most-wished-for/electronics/ref=zg_mw_nav_electronics_0", 1, "4 - Electrical Goods - Electronics & Photo - Most Wished For"],
+
+        ["https://www.amazon.de/-/en/gp/most-gifted/photo/ref=zg_mg_nav_photo_0", 1, "5 - Electrical Goods - Camera & Photo - Most Gifted"],
+        ["https://www.amazon.de/-/en/gp/most-gifted/computers/ref=zg_mg_nav_computers_0", 1, "5 - Electrical Goods - Computer & Accessories - Most Gifted"],
+        ["https://www.amazon.de/-/en/gp/most-gifted/electronics/ref=zg_mg_nav_electronics_0", 1, "5 - Electrical Goods - Electronics & Photo - Most Gifted"]],
+
+        
+        "Fashion & Accessories":
+        [["https://www.amazon.de/-/en/gp/new-releases/fashion/ref=zg_bsnr_nav_fashion_0", 1, "1 - Fashion & Accessories - Fashion & Accessories - Hot New Releases"],
+
+        ["https://www.amazon.de/-/en/gp/bestsellers/fashion/ref=zg_bs_nav_fashion_0", 1, "2 - Fashion & Accessories - Fashion & Accessories - Best Sellers"],
+
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/fashion/ref=zg_bsms_nav_fashion_0", 1, "3 - Fashion & Accessories - Fashion & Accessories - Movers and Shakers"],
+
+        ["https://www.amazon.de/-/en/gp/most-wished-for/fashion/ref=zg_mw_nav_fashion_0", 1, "4 - Fashion & Accessories - Fashion & Accessories - Most Wished For"],
+
+        ["https://www.amazon.de/-/en/gp/most-gifted/fashion/ref=zg_mg_nav_fashion_0", 1, "5 - Fashion & Accessories - Fashion & Accessories - Most Gifted"]],
+
+        
+
+        "Home & Garden":
+        [["https://www.amazon.de/-/en/gp/new-releases/garden/ref=zg_bsnr_nav_garden_0", 1, "1 - Home & Garden - Garden - Hot New Releases"],
+        ["https://www.amazon.de/-/en/gp/new-releases/kitchen/ref=zg_bsnr_nav_kitchen_0", 1, "1 - Home & Garden - Home & Kitchen - Hot New Releases"],
+        ["https://www.amazon.de/-/en/gp/new-releases/appliances/ref=zg_bsnr_nav_appliances_0", 1, "1 - Home & Garden - Large Appliances - Hot New Releases"],
+        ["https://www.amazon.de/-/en/gp/new-releases/lighting/ref=zg_bsnr_nav_lighting_0", 1, "1 - Home & Garden - Lighting - Hot New Releases"],
+
+        ["https://www.amazon.de/-/en/gp/bestsellers/garden/ref=zg_bs_nav_garden_0", 1, "2 - Home & Garden - Garden - Best Sellers"],
+        ["https://www.amazon.de/-/en/gp/bestsellers/kitchen/ref=zg_bs_nav_kitchen_0", 1, "2 - Home & Garden - Home & Kitchen - Best Sellers"],
+        ["https://www.amazon.de/-/en/gp/bestsellers/appliances/ref=zg_bs_nav_appliances_0", 1, "2 - Home & Garden - Large Appliances - Best Sellers"],
+        ["https://www.amazon.de/-/en/gp/bestsellers/lighting/ref=zg_bs_nav_lighting_0", 1, "2 - Home & Garden - Lighting - Best Sellers"],
+
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/garden/ref=zg_bsms_nav_garden_0", 1, "3 - Home & Garden - Garden - Movers and Shakers"],
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/kitchen/ref=zg_bsms_nav_kitchen_0", 1, "3 - Home & Garden - Home & Kitchen - Movers and Shakers"],
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/appliances/ref=zg_bsms_nav_appliances_0", 1, "3 - Home & Garden - Large Appliances - Movers and Shakers"],
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/lighting/ref=zg_bsms_nav_lighting_0", 1, "3 - Home & Garden - Lighting - Movers and Shakers"],
+
+        ["https://www.amazon.de/-/en/gp/most-wished-for/garden/ref=zg_mw_nav_garden_0", 1, "4 - Home & Garden - Garden - Most Wished For"],
+        ["https://www.amazon.de/-/en/gp/most-wished-for/kitchen/ref=zg_mw_nav_kitchen_0", 1, "4 - Home & Garden - Home & Kitchen - Most Wished For"],
+        ["https://www.amazon.de/-/en/gp/most-wished-for/appliances/ref=zg_mw_nav_appliances_0", 1, "4 - Home & Garden - Large Appliances - Most Wished For"],
+        ["https://www.amazon.de/-/en/gp/most-wished-for/lighting/ref=zg_mw_nav_lighting_0", 1, "4 - Home & Garden - Lighting - Most Wished For"],
+
+        ["https://www.amazon.de/-/en/gp/most-gifted/garden/ref=zg_mg_nav_garden_0", 1, "5 - Home & Garden - Garden - Most Gifted"],
+        ["https://www.amazon.de/-/en/gp/most-gifted/kitchen/ref=zg_mg_nav_kitchen_0", 1, "5 - Home & Garden - Home & Kitchen - Most Gifted"],
+        ["https://www.amazon.de/-/en/gp/most-gifted/appliances/ref=zg_mg_nav_appliances_0", 1, "5 - Home & Garden - Large Appliances - Most Gifted"],
+        ["https://www.amazon.de/-/en/gp/most-gifted/lighting/ref=zg_mg_nav_lighting_0", 1, "5 - Home & Garden - Lighting - Most Gifted"]],
+
+        
+        "Office & Business Equipment":
+        [["https://www.amazon.de/-/en/gp/new-releases/officeproduct/ref=zg_bsnr_nav_officeproduct_0", 1, "1 - Office & Business Equipment - Stationery & Office Supplies - Hot New Releases"],
+
+        ["https://www.amazon.de/-/en/gp/bestsellers/industrial/ref=zg_bs_nav_industrial_0", 1, "2 - Office & Business Equipment - Business, Industry & Science - Best Sellers"],
+        ["https://www.amazon.de/-/en/gp/bestsellers/officeproduct/ref=zg_bs_nav_officeproduct_0", 1, "2 - Office & Business Equipment - Stationery & Office Supplies - Best Sellers"],
+
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/officeproduct/ref=zg_bsms_nav_officeproduct_0", 1, "3 - Office & Business Equipment - Stationery & Office Supplies - Movers and Shakers"],
+
+        ["https://www.amazon.de/-/en/gp/most-wished-for/officeproduct/ref=zg_mw_nav_officeproduct_0", 1, "4 - Office & Business Equipment - Stationery & Office Supplies - Most Wished For"],
+
+        ["https://www.amazon.de/-/en/gp/most-gifted/officeproduct/ref=zg_mg_nav_officeproduct_0", 1, "5 - Office & Business Equipment - Stationery & Office Supplies - Most Gifted"]],
+
+        
+
+        "DIY":
+        [["https://www.amazon.de/-/en/gp/new-releases/diy/ref=zg_bsnr_nav_diy_0", 1, "1 - DIY - DIY & Tools - Hot New Releases"],
+
+        ["https://www.amazon.de/-/en/gp/bestsellers/diy/ref=zg_bs_nav_diy_0", 1, "2 - DIY - DIY & Tools - Best Sellers"],
+
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/diy/ref=zg_bsms_nav_diy_0", 1, "3 - DIY - DIY & Tools - Movers and Shakers"],
+
+        ["https://www.amazon.de/-/en/gp/most-wished-for/diy/ref=zg_mw_nav_diy_0", 1, "4 - DIY - DIY & Tools - Most Wished For"],
+
+        ["https://www.amazon.de/-/en/gp/most-gifted/diy/ref=zg_mg_nav_diy_0", 1, "5 - DIY - DIY & Tools - Most Gifted"]],
+
+        
+
+        "Drugstore & Cosmetics":
+        [["https://www.amazon.de/-/en/gp/new-releases/beauty/ref=zg_bsnr_nav_beauty_0", 1, "1 - Drugstore & Cosmetics - Beauty - Hot New Releases"],
+        ["https://www.amazon.de/-/en/gp/new-releases/drugstore/ref=zg_bsnr_nav_drugstore_0", 1, "1 - Drugstore & Cosmetics - Health & Personal Care - Hot New Releases"],
+
+        ["https://www.amazon.de/-/en/gp/bestsellers/beauty/ref=zg_bs_nav_beauty_0", 1, "2 - Drugstore & Cosmetics - Beauty - Best Sellers"],
+        ["https://www.amazon.de/-/en/gp/bestsellers/drugstore/ref=zg_bs_nav_drugstore_0", 1, "2 - Drugstore & Cosmetics - Health & Personal Care - Best Sellers"],
+
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/beauty/ref=zg_bsms_nav_beauty_0", 1, "3 - Drugstore & Cosmetics - Beauty - Movers and Shakers"],
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/drugstore/ref=zg_bsms_nav_drugstore_0", 1, "3 - Drugstore & Cosmetics - Health & Personal Care - Movers and Shakers"],
+
+        ["https://www.amazon.de/-/en/gp/most-wished-for/beauty/ref=zg_mw_nav_beauty_0", 1, "4 - Drugstore & Cosmetics - Beauty - Most Wished For"],
+        ["https://www.amazon.de/-/en/gp/most-wished-for/drugstore/ref=zg_mw_nav_drugstore_0", 1, "4 - Drugstore & Cosmetics - Health & Personal Care - Most Wished For"],
+
+        ["https://www.amazon.de/-/en/gp/most-gifted/beauty/ref=zg_mg_nav_beauty_0", 1, "5 - Drugstore & Cosmetics - Beauty - Most Gifted"],
+        ["https://www.amazon.de/-/en/gp/most-gifted/drugstore/ref=zg_mg_nav_drugstore_0", 1, "5 - Drugstore & Cosmetics - Health & Personal Care - Most Gifted"]],
+
+        
+
+        "Baby & Child":
+        [["https://www.amazon.de/-/en/gp/new-releases/baby/ref=zg_bsnr_nav_baby_0", 1, "1 - Baby & Child - Baby Products - Hot New Releases"],
+        ["https://www.amazon.de/-/en/gp/new-releases/toys/ref=zg_bsnr_nav_toys_0", 1, "1 - Baby & Child - Toys - Hot New Releases"],
+
+        ["https://www.amazon.de/-/en/gp/bestsellers/baby/ref=zg_bs_nav_baby_0", 1, "2 - Baby & Child - Baby Products - Best Sellers"],
+        ["https://www.amazon.de/-/en/gp/bestsellers/toys/ref=zg_bs_nav_toys_0", 1, "2 - Baby & Child - Toys - Best Sellers"],
+
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/baby/ref=zg_bsms_nav_baby_0", 1, "3 - Baby & Child - Baby Products - Movers and Shakers"],
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/toys/ref=zg_bsms_nav_toys_0", 1, "3 - Baby & Child - Toys - Movers and Shakers"],
+
+        ["https://www.amazon.de/-/en/gp/most-wished-for/baby/ref=zg_mw_nav_baby_0", 1, "4 - Baby & Child - Baby Products - Most Wished For"],
+        ["https://www.amazon.de/-/en/gp/most-wished-for/toys/ref=zg_mw_nav_toys_0", 1, "4 - Baby & Child - Toys - Most Wished For"],
+
+        ["https://www.amazon.de/-/en/gp/most-gifted/baby/ref=zg_mg_nav_baby_0", 1, "5 - Baby & Child - Baby Products - Most Gifted"],
+        ["https://www.amazon.de/-/en/gp/most-gifted/toys/ref=zg_mg_nav_toys_0", 1, "5 - Baby & Child - Toys - Most Gifted"]],
+
+        
+
+        "Sport & Leisure":
+        [["https://www.amazon.de/-/en/gp/new-releases/musical-instruments/ref=zg_bsnr_nav_musical-instruments_0", 1, "1 - Sport & Leisure - Musical Instruments & DJ - Hot New Releases"],
+        ["https://www.amazon.de/-/en/gp/new-releases/sports/ref=zg_bsnr_nav_sports_0", 1, "1 - Sport & Leisure - Sports & Outdoors - Hot New Releases"],
+
+        ["https://www.amazon.de/-/en/gp/bestsellers/musical-instruments/ref=zg_bs_nav_musical-instruments_0", 1, "2 - Sport & Leisure - Musical Instruments & DJ - Bestseller"],
+        ["https://www.amazon.de/-/en/gp/bestsellers/sports/ref=zg_bs_nav_sports_0", 1, "2 - Sport & Leisure - Sports & Outdoors - Bestseller"],
+
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/musical-instruments/ref=zg_bsms_nav_musical-instruments_0_sports", 1, "3 - Sport & Leisure - Musical Instruments & DJ - Movers and Shakers"],
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/sports/ref=zg_bsms_nav_sports_0", 1, "3 - Sport & Leisure - Sports & Outdoors - Movers and Shakers"],
+
+        ["https://www.amazon.de/-/en/gp/most-wished-for/musical-instruments/ref=zg_bs_tab_mw", 1, "4 - Sport & Leisure - Musical Instruments & DJ - Most Wished For"],
+        ["https://www.amazon.de/-/en/gp/most-wished-for/sports/ref=zg_mw_nav_sports_0", 1, "4 - Sport & Leisure - Sports & Outdoors - Most Wished For"],
+
+        ["https://www.amazon.de/-/en/gp/most-gifted/musical-instruments/ref=zg_mg_nav_musical-instruments_0", 1, "5 - Sport & Leisure - Musical Instruments & DJ - Most Gifted"],
+        ["https://www.amazon.de/-/en/gp/most-gifted/sports/ref=zg_mg_nav_sports_0", 1, "5 - Sport & Leisure - Sports & Outdoors - Most Gifted"]],
+
+        
+
+        "Pet Supplies":
+        [["https://www.amazon.de/-/en/gp/new-releases/pet-supplies/ref=zg_bsnr_nav_pet-supplies_0", 1, "1 - Pet Supplies - Pet Supplies - Hot New Releases"],
+        
+        ["https://www.amazon.de/-/en/gp/bestsellers/pet-supplies/ref=zg_bs_nav_pet-supplies_0", 1, "2 - Pet Supplies - Pet Supplies - Best Sellers"],
+        
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/pet-supplies/ref=zg_bsms_nav_pet-supplies_0", 1, "3 - Pet Supplies - Pet Supplies - Movers and Shakers"],
+        
+        ["https://www.amazon.de/-/en/gp/most-wished-for/pet-supplies/ref=zg_mw_nav_pet-supplies_0", 1, "4 - Pet Supplies - Pet Supplies - Most Wished For"],
+        
+        ["https://www.amazon.de/-/en/gp/most-gifted/pet-supplies/ref=zg_mg_nav_pet-supplies_0", 1, "5 - Pet Supplies - Pet Supplies - Most Gifted"]],
+
+        
+
+        "Car & Motorbike":
+        [["https://www.amazon.de/-/en/gp/new-releases/automotive/ref=zg_bsnr_nav_automotive_0", 1, "1 - Car & Motorbike - Automotive - Hot New Releases"],
+        
+        ["https://www.amazon.de/-/en/gp/bestsellers/automotive/ref=zg_bs_nav_automotive_0", 1, "2 - Car & Motorbike - Automotive - Best Sellers"],
+        
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/automotive/ref=zg_bsms_nav_automotive_0", 1, "3 - Car & Motorbike - Automotive - Movers and Shakers"],
+        
+        ["https://www.amazon.de/-/en/gp/most-wished-for/automotive/ref=zg_mw_nav_automotive_0", 1, "4 - Car & Motorbike - Automotive - Most Wished For"],
+        
+        ["https://www.amazon.de/-/en/gp/most-gifted/automotive/ref=zg_mg_nav_automotive_0", 1, "5 - Car & Motorbike - Automotive - Most Gifted"]],
+
+        
+
+        "Books, Media & Entertainment":
+        [["https://www.amazon.de/-/en/gp/new-releases/videogames/ref=zg_bsnr_nav_videogames_0", 1, "1 - Books, Media & Entertainment - PC & Video Games - Hot New Releases"],
+        ["https://www.amazon.de/-/en/gp/new-releases/dvd-de/ref=zg_bsnr_nav_dvd-de_0", 1, "1 - Books, Media & Entertainment - DVD & Blu-ray - Hot New Releases"],
+        ["https://www.amazon.de/-/en/gp/new-releases/music/ref=zg_bsnr_nav_music_0", 1, "1 - Books, Media & Entertainment - CDs & Vinyl - Hot New Releases"],
+        ["https://www.amazon.de/-/en/gp/new-releases/books/ref=zg_bsnr_nav_books_0", 1, "1 - Books, Media & Entertainment - Books - Hot New Releases"],
+        
+        ["https://www.amazon.de/-/en/gp/bestsellers/software/ref=zg_bs_nav_software_0", 1, "2 - Books, Media & Entertainment - Software - Best Sellers"],
+        ["https://www.amazon.de/-/en/gp/bestsellers/videogames/ref=zg_bs_nav_videogames_0", 1, "2 - Books, Media & Entertainment - PC & Video Games - Best Sellers"],
+        ["https://www.amazon.de/-/en/gp/bestsellers/dvd-de/ref=zg_bs_nav_dvd-de_0", 1, "2 - Books, Media & Entertainment - DVD & Blu-ray - Best Sellers"],
+        ["https://www.amazon.de/-/en/gp/bestsellers/music/ref=zg_bs_nav_music_0", 1, "2 - Books, Media & Entertainment - CDs & Vinyl - Best Sellers"],
+        ["https://www.amazon.de/-/en/gp/bestsellers/books/ref=zg_bs_nav_books_0", 1, "2 - Books, Media & Entertainment - Books - Best Sellers"],
+        
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/software/ref=zg_bsms_nav_software_0", 1, "3 - Books, Media & Entertainment - Software - Movers and Shakers"],
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/videogames/ref=zg_bsms_nav_videogames_0", 1, "3 - Books, Media & Entertainment - PC & Video Games - Movers and Shakers"],
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/dvd-de/ref=zg_bsms_nav_dvd-de_0", 1, "3 - Books, Media & Entertainment - DVD & Blu-ray - Movers and Shakers"],
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/music/ref=zg_bsms_nav_music_0", 1, "3 - Books, Media & Entertainment - CDs & Vinyl - Movers and Shakers"],
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/books/ref=zg_bsms_nav_books_0", 1, "3 - Books, Media & Entertainment - Books - Movers and Shakers"],
+        
+        ["https://www.amazon.de/-/en/gp/most-wished-for/software/ref=zg_mw_nav_software_0", 1, "4 - Books, Media & Entertainment - Software - Most Wished For"],
+        ["https://www.amazon.de/-/en/gp/most-wished-for/videogames/ref=zg_mw_nav_videogames_0", 1, "4 - Books, Media & Entertainment - PC & Video Games - Most Wished For"],
+        ["https://www.amazon.de/-/en/gp/most-wished-for/dvd-de/ref=zg_mw_nav_dvd-de_0", 1, "4 - Books, Media & Entertainment - DVD & Blu-ray - Most Wished For"],
+        ["https://www.amazon.de/-/en/gp/most-wished-for/music/ref=zg_mw_nav_music_0", 1, "4 - Books, Media & Entertainment - CDs & Vinyl - Most Wished For"],
+        ["https://www.amazon.de/-/en/gp/most-wished-for/books/ref=zg_mw_nav_books_0", 1, "4 - Books, Media & Entertainment - Books - Most Wished For"],
+        
+        ["https://www.amazon.de/-/en/gp/most-gifted/software/ref=zg_mg_nav_software_0", 1, "5 - Books, Media & Entertainment - Software - Most Gifted"],
+        ["https://www.amazon.de/-/en/gp/most-gifted/videogames/ref=zg_mg_nav_videogames_0", 1, "5 - Books, Media & Entertainment - PC & Video Games - Most Gifted"],
+        ["https://www.amazon.de/-/en/gp/most-gifted/dvd-de/ref=zg_mg_nav_dvd-de_0", 1, "5 - Books, Media & Entertainment - DVD & Blu-ray - Most Gifted"],
+        ["https://www.amazon.de/-/en/gp/most-gifted/music/ref=zg_mg_nav_music_0", 1, "5 - Books, Media & Entertainment - CDs & Vinyl - Most Gifted"],
+        ["https://www.amazon.de/-/en/gp/most-gifted/books/ref=zg_mg_nav_books_0", 1, "5 - Books, Media & Entertainment - Books - Most Gifted"]],
+        
+        
+
+        "Food & Beverages":
+        [["https://www.amazon.de/-/en/gp/bestsellers/grocery/ref=zg_bs_nav_grocery_0", 1, "2 - Food & Beverages - Grocery - Best Sellers"],
+        
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/grocery/ref=zg_bsms_nav_grocery_0", 1, "3 - Food & Beverages - Grocery - Movers and Shakers"],
+        
+        ["https://www.amazon.de/-/en/gp/most-wished-for/grocery/ref=zg_mw_nav_grocery_0", 1, "4 - Food & Beverages - Grocery - Most Wished For"],
+        
+        ["https://www.amazon.de/-/en/gp/most-gifted/grocery/ref=zg_mg_nav_grocery_0", 1, "5 - Food & Beverages - Grocery - Most Gifted"]],
+
+        
+        
+        "Other":
+        [["https://www.amazon.de/-/en/gp/new-releases/amazon-devices/ref=zg_bsnr_nav_amazon-devices_0", 1, "1 - Other - Amazon Devices & Accessories - Hot New Releases"],
+        ["https://www.amazon.de/-/en/gp/new-releases/boost/ref=zg_bsnr_nav_boost_0", 1, "1 - Other - Amazon Launchpad - Hot New Releases"],
+        ["https://www.amazon.de/-/en/gp/new-releases/amazon-renewed/ref=zg_bsnr_nav_amazon-renewed_0", 1, "1 - Other - Amazon Renewed - Hot New Releases"],
+        ["https://www.amazon.de/-/en/gp/new-releases/climate-pledge/ref=zg_bsnr_nav_climate-pledge_0", 1, "1 - Other - Climate Pledge Friendly - Hot New Releases"],
+        ["https://www.amazon.de/-/en/gp/new-releases/handmade/ref=zg_bsnr_nav_handmade_0", 1, "1 - Other - Handmade Products - Hot New Releases"],
     
-    "all_urls" : [[ "https://www.amazon.de/-/en/gp/bestsellers/computers/430049031/ref=zg_bs_nav_computers_2_427958031" , 3, "Adapters"],
-                    ["https://www.amazon.de/-/en/gp/new-releases/computers/430049031/ref=zg_bsnr_nav_computers_2_427958031" , 3, "Adapters"],
-                    ["https://www.amazon.de/-/en/gp/most-wished-for/computers/430049031/ref=zg_mw_nav_computers_2_427958031" , 3, "Adapters"],
-                    ["https://www.amazon.de/-/en/gp/most-gifted/computers/430049031/ref=zg_mg_nav_computers_2_427958031" , 3, "Adapters"]
-                    ]
+        ["https://www.amazon.de/-/en/gp/bestsellers/amazon-devices/ref=zg_bs_nav_amazon-devices_0", 1, "2 - Other - Amazon Devices & Accessories - Best Sellers"],
+        ["https://www.amazon.de/-/en/gp/bestsellers/boost/ref=zg_bs_nav_boost_0", 1, "2 - Other - Amazon Launchpad - Best Sellers"],
+        ["https://www.amazon.de/-/en/gp/bestsellers/amazon-renewed/ref=zg_bs_nav_amazon-renewed_0", 1, "2 - Other - Amazon Renewed - Best Sellers"],
+        ["https://www.amazon.de/-/en/gp/bestsellers/climate-pledge/ref=zg_bs_nav_climate-pledge_0", 1, "2 - Other - Climate Pledge Friendly - Best Sellers"],
+        ["https://www.amazon.de/-/en/gp/bestsellers/gift-cards/ref=zg_bs_nav_gift-cards_0", 1, "2 - Other - Gift Cards - Best Sellers"],
+        ["https://www.amazon.de/-/en/gp/bestsellers/handmade/ref=zg_bs_nav_handmade_0", 1, "2 - Other - Handmade Products - Best Sellers"],
+    
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/amazon-devices/ref=zg_bsms_nav_amazon-devices_0", 1, "3 - Other - Amazon Devices & Accessories - Movers and Shakers"],
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/boost/ref=zg_bsms_nav_boost_0", 1, "3 - Other - Amazon Launchpad - Movers and Shakers"],
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/amazon-renewed/ref=zg_bsms_nav_amazon-renewed_0", 1, "3 - Other - Amazon Renewed - Movers and Shakers"],
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/climate-pledge/ref=zg_bsms_nav_climate-pledge_0", 1, "3 - Other - Climate Pledge Friendly - Movers and Shakers"],
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/gift-cards/ref=zg_bsms_nav_gift-cards_0", 1, "3 - Other - Gift Cards - Movers and Shakers"],
+        ["https://www.amazon.de/-/en/gp/movers-and-shakers/handmade/ref=zg_bsms_nav_handmade_0", 1, "3 - Other - Handmade Products - Movers and Shakers"],
+    
+        ["https://www.amazon.de/-/en/gp/most-wished-for/amazon-devices/ref=zg_mw_nav_amazon-devices_0", 1, "4 - Other - Amazon Devices & Accessories - Most Wished For"],
+        ["https://www.amazon.de/-/en/gp/most-wished-for/boost/ref=zg_mw_nav_boost_0", 1, "4 - Other - Amazon Launchpad - Most Wished For"],
+        ["https://www.amazon.de/-/en/gp/most-wished-for/amazon-renewed/ref=zg_mw_nav_amazon-renewed_0", 1, "4 - Other - Amazon Renewed - Most Wished For"],
+        ["https://www.amazon.de/-/en/gp/most-wished-for/climate-pledge/ref=zg_mw_nav_climate-pledge_0", 1, "4 - Other - Climate Pledge Friendly - Most Wished For"],
+        ["https://www.amazon.de/-/en/gp/most-wished-for/gift-cards/ref=zg_mw_nav_gift-cards_0", 1, "4 - Other - Gift Cards - Most Wished For"],
+        ["https://www.amazon.de/-/en/gp/most-wished-for/handmade/ref=zg_mw_nav_handmade_0", 1, "4 - Other - Handmade Products - Most Wished For"],
+
+        ["https://www.amazon.de/-/en/gp/most-gifted/amazon-devices/ref=zg_mg_nav_amazon-devices_0", 1, "5 - Other - Amazon Devices & Accessories - Most Gifted"],
+        ["https://www.amazon.de/-/en/gp/most-gifted/boost/ref=zg_mg_nav_boost_0", 1, "5 - Other - Amazon Launchpad - Most Gifted"],
+        ["https://www.amazon.de/-/en/gp/most-gifted/amazon-renewed/ref=zg_mg_nav_amazon-renewed_0", 1, "5 - Other - Amazon Renewed - Most Gifted"],
+        ["https://www.amazon.de/-/en/gp/most-gifted/climate-pledge/ref=zg_mg_nav_climate-pledge_0", 1, "5 - Other - Climate Pledge Friendly - Most Gifted"],
+        ["https://www.amazon.de/-/en/gp/most-gifted/gift-cards/ref=zg_mg_nav_gift-cards_0", 1, "5 - Other - Gift Cards - Most Gifted"],
+        ["https://www.amazon.de/-/en/gp/most-gifted/handmade/ref=zg_mg_nav_handmade_0", 1, "5 - Other - Handmade Products - Most Gifted"]]
+    }
+
 }
