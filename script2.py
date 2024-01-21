@@ -15,8 +15,9 @@ from amazoncaptcha import AmazonCaptcha
 with open("last_state.json", 'r') as file:
     last_state_data = json.load(file)
 
-def setup_chrome_driver(extension_path):
+def setup_chrome_driver():
     chrome_options = webdriver.ChromeOptions()
+    extension_path = './amazoncrxextension.crx'
     chrome_options.add_extension(extension_path)
     driver = webdriver.Chrome(options=chrome_options)
     driver.maximize_window()
@@ -48,38 +49,23 @@ def handle_cookies(driver):
     except TimeoutException:
         pass
 
-def get_category_folder(main_category_name):
-    
-    main_folder_name = main_category_name
-    
-    if main_category_name == 'Electrical Goods':
-        main_folder_name = "Category 1"
-    elif main_category_name == 'Fashion & Accessories':
-        main_folder_name = "Category 2"
-    elif main_category_name == 'Home & Garden':
-        main_folder_name = "Category 3"
-    elif main_category_name == 'Office & Business Equipment':
-        main_folder_name = "Category 4"
-    elif main_category_name == 'DIY':
-        main_folder_name = "Category 5"
-    elif main_category_name == 'Drugstore & Cosmetics':
-        main_folder_name = "Category 6"
-    elif main_category_name == 'Baby & Child':
-        main_folder_name = "Category 7"
-    elif main_category_name == 'Sport & Leisure':
-        main_folder_name = "Category 8"
-    elif main_category_name == 'Pet Supplies':
-        main_folder_name = "Category 9"
-    elif main_category_name == 'Car & Motorbike':
-        main_folder_name = "Category 10"
-    elif main_category_name == 'Books, Media & Entertainment':
-        main_folder_name = "Category 11"
-    elif main_category_name == 'Food & Beverages':
-        main_folder_name = "Category 12"
-    elif main_category_name == 'Other':
-        main_folder_name = "Category 13"
-
-    return main_folder_name
+def get_category_folder(category):
+    category_mapping = {
+        'Electrical Goods': "Category 1",
+        'Fashion & Accessories': "Category 2",
+        'Home & Garden': "Category 3",
+        'Office & Business Equipment': "Category 4",
+        'DIY': "Category 5",
+        'Drugstore & Cosmetics': "Category 6",
+        'Baby & Child': "Category 7",
+        'Sport & Leisure': "Category 8",
+        'Pet Supplies': "Category 9",
+        'Car & Motorbike': "Category 10",
+        'Books, Media & Entertainment': "Category 11",
+        'Food & Beverages': "Category 12",
+        'Other': "Category 13"
+    }
+    return category_mapping.get(category, None)
 
 def get_excel_files(main_category_name):
     excel_files = []
@@ -214,8 +200,9 @@ def save_workbook(workbook, excel_file_path):
         raise
 
 def main(driver, category):
-
+    
     try:
+
         excel_files = get_excel_files(category)
         workbook, asin_excel_file_path, last_row = create_or_load_workbook(category)
                 
@@ -245,8 +232,6 @@ def main(driver, category):
         logging.error(f"An unexpected error occurred: {e}")
 
 if __name__ == "__main__":
-    logging.basicConfig(filename=f'Log Files\\logfile_{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}.txt ', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-    extension_path = './amazoncrxextension.crx'
-    driver = setup_chrome_driver(extension_path)
+    driver = setup_chrome_driver()
     handle_cookies(driver)
     main(driver, "Electrical Goods")
