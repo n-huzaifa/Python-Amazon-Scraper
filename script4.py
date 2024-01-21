@@ -3,6 +3,8 @@ import os
 import logging
 import json
 import datetime
+import time
+import keyboard
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -17,9 +19,6 @@ from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 from amazoncaptcha import AmazonCaptcha
 
-with open("last_state.json", 'r') as file:
-    last_state_data = json.load(file)
-
 with open("data.json", 'r') as file:
     data = json.load(file)
 
@@ -27,14 +26,11 @@ recipient_email = data["recipient_email"]
 sender_email = data["sender_email"]
 sender_password = data["sender_password"]
 all_urls = data["all_urls"]
-# all_urls = sorted(all_urls_unsorted, key=lambda x: x[2])
-
-extension_path = './amazoncrxextension.crx'
-base_url = 'https://www.amazon.de/'
 
 def configure_driver():
     chrome_options = Options()
-    chrome_options.add_extension(extension_path)
+    chrome_options.add_extension('./amazoncrxextension.crx')
+    chrome_options.add_argument(r'--user-data-dir=F:\OuoC')
     driver = webdriver.Chrome(options=chrome_options)
     driver.maximize_window()
     return driver
@@ -66,37 +62,22 @@ def handle_cookies(driver):
         pass
 
 def get_category_folder(category):
-    
-    main_folder_name = category
-
-    if category == 'Electrical Goods':
-        main_folder_name = "Category 1"
-    elif category == 'Fashion & Accessories':
-        main_folder_name = "Category 2"
-    elif category == 'Home & Garden':
-        main_folder_name = "Category 3"
-    elif category == 'Office & Business Equipment':
-        main_folder_name = "Category 4"
-    elif category == 'DIY':
-        main_folder_name = "Category 5"
-    elif category == 'Drugstore & Cosmetics':
-        main_folder_name = "Category 6"
-    elif category == 'Baby & Child':
-        main_folder_name = "Category 7"
-    elif category == 'Sport & Leisure':
-        main_folder_name = "Category 8"
-    elif category == 'Pet Supplies':
-        main_folder_name = "Category 9"
-    elif category == 'Car & Motorbike':
-        main_folder_name = "Category 10"
-    elif category == 'Books, Media & Entertainment':
-        main_folder_name = "Category 11"
-    elif category == 'Food & Beverages':
-        main_folder_name = "Category 12"
-    elif category == 'Other':
-        main_folder_name = "Category 13"
-
-    return main_folder_name
+    category_mapping = {
+        'Electrical Goods': "Category 1",
+        'Fashion & Accessories': "Category 2",
+        'Home & Garden': "Category 3",
+        'Office & Business Equipment': "Category 4",
+        'DIY': "Category 5",
+        'Drugstore & Cosmetics': "Category 6",
+        'Baby & Child': "Category 7",
+        'Sport & Leisure': "Category 8",
+        'Pet Supplies': "Category 9",
+        'Car & Motorbike': "Category 10",
+        'Books, Media & Entertainment': "Category 11",
+        'Food & Beverages': "Category 12",
+        'Other': "Category 13"
+    }
+    return category_mapping.get(category, None)
 
 def get_excel_files(category, script):
 
@@ -168,31 +149,49 @@ def main_mail(category, script):
     excel_files = get_excel_files(category, script)
     send_mail(sender_email, sender_password, recipient_email, subject, message, excel_files)
 
-def main(all_urls):
+def is_end_of_week():
+    today = datetime.datetime.now().weekday()
+    if today == 6:
+        global is_script1_done
+        is_script1_done = False
+    # Assuming Friday is the end of the week (Monday = 0, Sunday = 6)
+    return today == 6 
 
-    logging.basicConfig(filename=f'Log Files\\logfile_{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}.txt ', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-    
-    driver = configure_driver()
-    handle_cookies(driver)
-        
+def main1(driver):
+
     for category, url_data in all_urls.items():
 
         script1_main(driver, url_data)
         script2_main(driver, category)
-        main_mail(category, 0)
-        script3_main(driver, category)
-        main_mail(category, 1)
+        # main_mail(category, 0)
+        
+    global is_script1_done
+    is_script1_done = True
 
-    # Close the WebDriver instance after all scripts have run
-    driver.quit()
+def amalyse_login(driver):
+    driver.get(f"https://shield.amalyze.com/auth/login?redirect=%2Fdashboard")
+    # Wait for the space key press
+    while True:
+        if keyboard.is_pressed(' '):
+            break
+        time.sleep(1)
+
+def main():
+
+    driver = configure_driver()
+    handle_cookies(driver)
+    amalyse_login(driver)
+
+    main1(driver)
+    
+    for _ in all_urls:
+        if is_end_of_week(is_script1_done):
+            if not is_script1_done:
+                main1(driver)
+        
+        script3_main(driver)
 
 if __name__ == "__main__":
-    previous_categories = []
-    for i in all_urls.keys():
-        if i == last_state_data["script4_last_category"]:
-            previous_categories.append(i)
-            break
-        else:
-            previous_categories.append(i)
-
-    main(all_urls)
+    logging.basicConfig(filename=f'Log Files\\logfile_{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}.txt ', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    while True:
+        main()
