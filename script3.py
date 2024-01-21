@@ -1,3 +1,4 @@
+import smtplib
 import os
 import openpyxl
 import re
@@ -11,13 +12,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.application import MIMEApplication
 from amazoncaptcha import AmazonCaptcha
 
-with open("last_state.json", 'r') as file:
-    last_state_data = json.load(file)
-
-def setup_chrome_driver(extension_path):
+def setup_chrome_driver():
     chrome_options = webdriver.ChromeOptions()
+    extension_path = './amazoncrxextension.crx'
     chrome_options.add_extension(extension_path)
     driver = webdriver.Chrome(options=chrome_options)
     driver.maximize_window()
@@ -49,38 +51,32 @@ def handle_cookies(driver):
     except TimeoutException:
         pass
 
-def get_category_folder(main_category_name):
-    
-    main_folder_name = main_category_name
+def get_last_state():
+    try:
+        global last_state_data
+        with open("last_state.json", 'r') as file:
+            last_state_data = json.load(file)
+        return last_state_data['last_category'], last_state_data['last_asin']
+    except:
+        return "Electrical Goods", None
 
-    if main_category_name == 'Electrical Goods':
-        main_folder_name = "Category 1"
-    elif main_category_name == 'Fashion & Accessories':
-        main_folder_name = "Category 2"
-    elif main_category_name == 'Home & Garden':
-        main_folder_name = "Category 3"
-    elif main_category_name == 'Office & Business Equipment':
-        main_folder_name = "Category 4"
-    elif main_category_name == 'DIY':
-        main_folder_name = "Category 5"
-    elif main_category_name == 'Drugstore & Cosmetics':
-        main_folder_name = "Category 6"
-    elif main_category_name == 'Baby & Child':
-        main_folder_name = "Category 7"
-    elif main_category_name == 'Sport & Leisure':
-        main_folder_name = "Category 8"
-    elif main_category_name == 'Pet Supplies':
-        main_folder_name = "Category 9"
-    elif main_category_name == 'Car & Motorbike':
-        main_folder_name = "Category 10"
-    elif main_category_name == 'Books, Media & Entertainment':
-        main_folder_name = "Category 11"
-    elif main_category_name == 'Food & Beverages':
-        main_folder_name = "Category 12"
-    elif main_category_name == 'Other':
-        main_folder_name = "Category 13"
-
-    return main_folder_name
+def get_category_folder(category):
+    category_mapping = {
+        'Electrical Goods': "Category 1",
+        'Fashion & Accessories': "Category 2",
+        'Home & Garden': "Category 3",
+        'Office & Business Equipment': "Category 4",
+        'DIY': "Category 5",
+        'Drugstore & Cosmetics': "Category 6",
+        'Baby & Child': "Category 7",
+        'Sport & Leisure': "Category 8",
+        'Pet Supplies': "Category 9",
+        'Car & Motorbike': "Category 10",
+        'Books, Media & Entertainment': "Category 11",
+        'Food & Beverages': "Category 12",
+        'Other': "Category 13"
+    }
+    return category_mapping.get(category, None)
 
 def get_excel_file_path(main_category_name):
 
@@ -105,24 +101,23 @@ def get_excel_file_path(main_category_name):
     else:
         return None  # Return None if no Excel files were found
 
-def load_excel_workbook(category, excel_file_path):
+def load_excel_workbook(last_asin, excel_file_path):
     wb = openpyxl.load_workbook(excel_file_path)
     sheet = wb.active
     asins = [tuple(sheet.cell(row=cell.row, column=col).value for col in range(1, sheet.max_column + 1)) for cell in sheet['A'] if cell.value and cell.row > 1]
-    try:
-        last_asin = last_state_data["script3"][category]
-    
-        # Find the index of the last ASIN in the list
-        last_asin_index = next((index for index, a in enumerate(asins) if a[0] == last_asin), None)
-        
-        if last_asin_index is not None:
-            # Return ASINs that come after the last ASIN
-            return asins[last_asin_index + 1:]
-    except:
-        pass
+    if last_asin is not None:
+        try:
+            # Find the index of the last ASIN in the list
+            last_asin_index = next((index for index, a in enumerate(asins) if a[0] == last_asin), None)
+            
+            if last_asin_index is not None:
+                # Return ASINs that come after the last ASIN
+                return asins[last_asin_index + 1:]
+        except:
+            pass
 
     return asins
-  
+
 def create_or_load_workbook(category):
     
     main_folder_name = get_category_folder(category)
@@ -152,6 +147,47 @@ def create_or_load_workbook(category):
         row_index = 2
 
     return workbook, worksheet, row_index, excel_file_path
+
+def create_email(sender_email, recipient, subject, message, excel_file):
+    msg = MIMEMultipart()
+    msg['From'] = sender_email
+    msg['To'] = recipient
+    msg['Subject'] = subject
+    msg.attach(MIMEText(message, 'plain'))
+
+    with open(excel_file, 'rb') as file_content:
+        excel_attachment = MIMEApplication(file_content.read(), _subtype="xlsx")
+    excel_attachment.add_header('content-disposition', 'attachment', filename=excel_file)
+    msg.attach(excel_attachment)
+    logging.info(f"file attached: {excel_file}")
+
+    return msg
+
+def send_mail(sender_email, sender_password, recipient, subject, message, excel_files):
+    smtp_server = smtplib.SMTP('smtp.gmail.com', 587)
+    smtp_server.starttls()
+
+    try:
+        smtp_server.login(sender_email, sender_password)
+        email_msg = create_email(sender_email, recipient, subject, message, excel_files)
+        smtp_server.sendmail(sender_email, recipient, email_msg.as_string())
+        logging.info("Email sent successfully.")
+    except Exception as e:
+        logging.error(f"Failed to send email. Error: {e}")
+    finally:
+        smtp_server.quit()
+
+def main_mail(excel_file):
+    with open("data.json", 'r') as file:
+        data = json.load(file)
+
+    recipient_email = data["recipient_email"]
+    sender_email = data["sender_email"]
+    sender_password = data["sender_password"]
+    subject = 'Excel File'
+    message = 'Please find the attached Excel file.'
+
+    send_mail(sender_email, sender_password, recipient_email, subject, message, excel_file)
 
 def extract_price(driver):
     # Try to find the price directly on the page
@@ -307,7 +343,8 @@ def update_excel_sheet(category, worksheet, row_index, asin, brand, title, price
         worksheet.cell(row=row_index, column=9).value = category_rank
         worksheet.cell(row=row_index, column=10).value = datetime.datetime.now().strftime("%Y-%m-%d")
         row_index = row_index + 1
-        last_state_data["script3"][category] = asin
+        last_state_data['last_category'] = category
+        last_state_data['last_asin'] = asin
         with open("last_state.json", 'w') as file:
             json.dump(last_state_data, file, indent=4)
         logging.info(f"Updated Excel sheet for ASIN: {asin}")
@@ -316,50 +353,49 @@ def update_excel_sheet(category, worksheet, row_index, asin, brand, title, price
     finally:
         return row_index
 
-def main(driver, category):
-
+def main(driver):
+    
+    category, last_asin = get_last_state()
     try:
-        excel_files = get_excel_file_path(category)
+        excel_file_path = get_excel_file_path(category)
 
-        for excel_file_path in excel_files:
-            if excel_file_path:
-                try:
-                    asins = load_excel_workbook(category, excel_file_path)
-                    
-                    workbook, worksheet, row_index, excel_file_path_asin = create_or_load_workbook(category)
+        if excel_file_path:
+            try:
+                asins = load_excel_workbook(last_asin, excel_file_path)
+                
+                workbook, worksheet, row_index, excel_file_path_asin = create_or_load_workbook(category)
 
-                    for asin in asins:
+                for asin in asins:
 
-                        try:
-                            driver.get(f'https://www.amazon.de/dp/{asin[0]}')
-                            sleep(3)
-                            handle_cookies(driver)
-                            
-                            # Use WebDriverWait with a timeout of 60 seconds for each ASIN extraction
-                            WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.ID, "productTitle")))
-                            
-                            row_index = extract_product_data(category, driver, asin[0], row_index, worksheet)
-                            workbook.save(excel_file_path_asin)
-
-                        except TimeoutException:
-                            logging.warning(f"Timeout occurred for ASIN {asin[0]}. Skipping to the next row.")
-                            continue
+                    try:
+                        driver.get(f'https://www.amazon.de/dp/{asin[0]}')
+                        sleep(3)
+                        handle_cookies(driver)
                         
-                    logging.info("Script execution completed successfully")
+                        # Use WebDriverWait with a timeout of 60 seconds for each ASIN extraction
+                        WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.ID, "productTitle")))
+                        
+                        row_index = extract_product_data(category, driver, asin[0], row_index, worksheet)
+                        workbook.save(excel_file_path_asin)
+
+                    except TimeoutException:
+                        logging.warning(f"Timeout occurred for ASIN {asin[0]}. Skipping to the next row.")
+                        continue
                     
-                except Exception as e:
-                    logging.error(f"Error processing Excel file {excel_file_path}: {e}")
-            else:
+                logging.info("Script execution completed successfully")
+                
+            except Exception as e:
+                logging.error(f"Error processing Excel file {excel_file_path}: {e}")
+        else:
                 logging.error("None File with Asins there.")
 
-            workbook.save(excel_file_path_asin)
-            workbook.close()
+        workbook.save(excel_file_path_asin)
+        workbook.close()
+        main_mail(excel_file_path_asin)
     except Exception as e:
         logging.error(f"Script execution failed: {e}")
 
 if __name__ == "__main__":
-    logging.basicConfig(filename=f'Log Files\\logfile_{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}.txt ', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-    extension_path = './amazoncrxextension.crx'
-    driver = setup_chrome_driver(extension_path)
+    driver = setup_chrome_driver()
     handle_cookies(driver)
     main(driver, "Electrical Goods")
